@@ -17,15 +17,7 @@ Try the live demo: [Shortcut Input Demo](https://ofcrs.github.io/shortcut-input/
 - 💅 Modern, responsive design with customizable styles
 - 📱 Cross-platform support (Windows, macOS, Linux)
 - 🔒 Type-safe with TypeScript support
-
-## Installation
-
-```bash
-npm install shortcut-input
-# or
-yarn add shortcut-input
-```
-
+  
 ## Usage
 
 ```tsx
