@@ -95,8 +95,9 @@ const ShortcutInput: React.FC<ShortcutInputProps> = ({ value, modifiers, onChang
   const isValidShortcut = (keys: string[]): boolean => {
     if (keys.length === 0) return false;
     
+    const modifierCount = keys.filter(key => isModifierKey(key)).length;
     const nonModifiers = keys.filter(key => !isModifierKey(key));
-    return nonModifiers.length === 1;
+    return modifierCount >= 1 && nonModifiers.length === 1;
   };
 
   const formatShortcut = (keys: string[]): string => {
@@ -112,24 +113,19 @@ const ShortcutInput: React.FC<ShortcutInputProps> = ({ value, modifiers, onChang
   };
 
   const getDisplayText = () => {
-    // If we have a valid shortcut and no keys are currently pressed, show the valid shortcut
-    if (lastValidShortcut && currentKeys.length === 0) {
-      return lastValidShortcut;
-    }
-
-    // If we have a valid shortcut and current input is invalid, show the last valid shortcut
-    if (lastValidShortcut && !isValidShortcut(currentKeys)) {
-      return lastValidShortcut;
-    }
-
     // If we have current keys and they form a valid shortcut, show them
     if (currentKeys.length > 0 && isValidShortcut(currentKeys)) {
       return formatShortcut(currentKeys);
     }
 
-    // If we have a valid shortcut but current keys are being pressed, show the last valid shortcut
+    // If we have a valid shortcut, show it (even during invalid key combinations)
     if (lastValidShortcut) {
       return lastValidShortcut;
+    }
+
+    // If no valid shortcut exists yet, show in-progress keys
+    if (currentKeys.length > 0) {
+      return formatShortcut(currentKeys);
     }
 
     // Default empty state
